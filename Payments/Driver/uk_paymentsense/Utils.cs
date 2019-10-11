@@ -34,5 +34,36 @@ namespace Acrelec.Mockingbird.Payment
 
             return amount;
         }
+
+        /// <summary>
+        /// Get the Currency Symbol String
+        /// </summary>
+        public static string GetCurrencySymbol(string symbol)
+        {
+            string CurrencySymbol = "";
+
+            switch (symbol)
+            {
+                case "GBP":
+                    CurrencySymbol = "£";
+                    break;
+                case "USD":
+                case "CAD":
+                case "AUD":
+                    CurrencySymbol = "$";
+                    break;
+                case "EUR":
+                    CurrencySymbol = "€";
+                    break;
+                case "JPY":
+                case "CNY":
+                    CurrencySymbol = "¥";
+                    break;
+                default: /* Do Nothing */ break;
+            }
+
+            return CurrencySymbol;
+        }
+
     }
 }

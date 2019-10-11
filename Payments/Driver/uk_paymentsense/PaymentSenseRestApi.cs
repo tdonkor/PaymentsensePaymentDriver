@@ -19,9 +19,15 @@ namespace Acrelec.Mockingbird.Payment
         private string url;
         private string tid;
         private string currency;
+        private string installerId;
+        private string softwareHouseId;
+        private string mediaType;
 
         AppConfiguration configFile;
 
+        /// <summary>
+        /// initialise config file params
+        /// </summary>
         public PaymentSenseRestApi()
         {
             configFile = AppConfiguration.Instance;
@@ -30,6 +36,9 @@ namespace Acrelec.Mockingbird.Payment
             url = configFile.UserAccountUrl;
             tid = configFile.Tid;
             currency = configFile.Currency;
+            installerId = configFile.InstallerId;
+            softwareHouseId = configFile.SoftwareHouseId;
+            mediaType = configFile.MediaType;
         }
 
         /// <summary>
@@ -56,9 +65,8 @@ namespace Acrelec.Mockingbird.Payment
             }
 
             var request = new RestRequest(Method.POST);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Connection", "keep-alive");
-            request.AddParameter("undefined", "{\r\n  \"transactionType\": \"SALE\",\r\n  \"amount\": " + value + ",\r\n  \"currency\": \"" + configFile.Currency + "\"\r\n}", ParameterType.RequestBody);
+            request = RequestParams(request);
+            request.AddParameter("Sale", "{\r\n  \"transactionType\": \"SALE\",\r\n  \"amount\": " + value + ",\r\n  \"currency\": \"" + configFile.Currency + "\"\r\n}", ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
 
@@ -70,14 +78,10 @@ namespace Acrelec.Mockingbird.Payment
                 requestId = tranResponse.RequestId;
 
                 //poll for result every 1 seconds block until finish
-                //int i = 0;
-
                 while (true)
                 {
                     Thread.Sleep(1000);
                     response = GetTransactionData(requestId, configFile.UserAccountUrl);
-                    // Console.WriteLine(response.Content + "\n\n");
-                    // Console.Write(" " + i++);
 
                     if ((response.Content.Contains("SIGNATURE_VERIFICATION")) && (signatureRequired == false))
                     {
@@ -102,8 +106,6 @@ namespace Acrelec.Mockingbird.Payment
             }
             else
                 return DiagnosticErrMsg.NOTOK;
-        
-
         }
 
         /// <summary>
@@ -116,11 +118,9 @@ namespace Acrelec.Mockingbird.Payment
 
             RestClient client = Authenticate(url + "/pac/terminals/" + tid + "/transactions/" + requestId);
             var request = new RestRequest(Method.GET);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Connection", "keep-alive");
+            request = RequestParams(request);
 
             IRestResponse response = client.Execute(request);
-
 
             return response;
         }
@@ -135,9 +135,8 @@ namespace Acrelec.Mockingbird.Payment
         {
             RestClient client = Authenticate(url + "/pac/terminals/" + tid + "/transactions/" + requestId + "/signature");
             var request = new RestRequest(Method.PUT);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("Connection", "keep-alive");
-            request.AddParameter("undefined", "{\r\n  \"accepted\": false\r\n}", ParameterType.RequestBody);
+            request = RequestParams(request);
+            request.AddParameter("Signature", "{\r\n  \"accepted\": false\r\n}", ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
 
@@ -157,6 +156,21 @@ namespace Acrelec.Mockingbird.Payment
             };
         }
 
+        /// <summary>
+        /// The Request Parameters for the REST API calls 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        private RestRequest RequestParams(RestRequest request)
+        {
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Accept", mediaType);
+            request.AddHeader("Software-House-Id", softwareHouseId);
+            request.AddHeader("Installer-Id", installerId);
+            request.AddHeader("Connection", "keep-alive");
+
+            return request;
+        }
 
         public void Dispose()
         {

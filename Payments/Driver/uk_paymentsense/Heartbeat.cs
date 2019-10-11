@@ -50,7 +50,7 @@ namespace Acrelec.Mockingbird.Payment
 
             try
             {
-                using (var api = new GuardianApi())
+                using (var api = new PaymentSenseRestApi())
                 {
                    
                     Alive = true;

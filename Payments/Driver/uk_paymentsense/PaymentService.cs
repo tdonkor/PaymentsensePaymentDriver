@@ -123,10 +123,10 @@ namespace Acrelec.Mockingbird.Payment
 
                     if (payResult != DiagnosticErrMsg.OK && payResponse != null)
                     {
-                        Log.Error($"Pay Result = {payResult} Payment Failed...");                    
+                        Log.Error($"Pay Result = {payResult} Payment Failed...See Stored Ticket");                    
                         data.Result = PaymentResult.Failed;
 
-                        PrintErrorTicket(data, string.Empty);
+                        PrintErrorTicket(data, payResponse.TransactionResult);
 
                         return new Result<PaymentData>((ResultCode)payResult, data: data);
                     }
@@ -166,7 +166,7 @@ namespace Acrelec.Mockingbird.Payment
         {
             //print the payment ticket for an error
             //
-            CreateCustomerTicket("\nPayment failure with\nyour card or issuer\nNO payment has been taken.\n\nPlease try again with another card,\nor at a manned till.\n\n" + details);
+            CreateCustomerTicket("\nPayment failure with\nyour card or issuer\nNO payment has been taken.\n\nPlease try again with another card,\nor at a manned till.\n\n" +"Payment: " +  details);
             data.HasClientReceipt = true;
         }
 
@@ -184,7 +184,7 @@ namespace Acrelec.Mockingbird.Payment
         /// with Customer and Merchant receiept
         /// </summary>
         /// <param name="result"></param>
-        private static void PersistTransaction(TransactionDetails result)
+        private static void PersistTransaction(string customerReceipt)
         {
             try
             {
@@ -197,15 +197,10 @@ namespace Acrelec.Mockingbird.Payment
                     Directory.CreateDirectory(outputDirectory);
                 }
 
-                StringBuilder customerReceipt = new StringBuilder();
-                StringBuilder merchantReceipt = new StringBuilder();
-
-
-
                 Log.Info("Persisting Customerticket to {0}", outputPath);
 
                 //Write the new ticket
-                File.WriteAllText(outputPath, customerReceipt.ToString() + merchantReceipt.ToString());
+                File.WriteAllText(outputPath, customerReceipt.ToString());
             }
             catch (Exception ex)
             {
@@ -231,7 +226,7 @@ namespace Acrelec.Mockingbird.Payment
                 File.WriteAllText(ticketPath, ticket);
 
                 //persist the transaction
-                PersistTransaction(ticket);
+                 PersistTransaction(ticket);
 
             }
             catch (Exception ex)
@@ -249,35 +244,35 @@ namespace Acrelec.Mockingbird.Payment
         {
             StringBuilder ticketContent = new StringBuilder();
 
-            //get the reponse details for the ticket
+            //set user message
+            ticket.UserMessage = "\n\tPLEASE RETAIN RECEIPT. \n\n\tTHANK YOU.";
 
-            ticketContent.Append($"\tCUSTOMER RECEIPT\n");
-            ticketContent.Append($"\t_______________________\n");
-            ticketContent.Append($"Amount Total: {ticket.AmountTotal}");
-            ticketContent.Append($"Application Id: {ticket.ApplicationId}");
-            ticketContent.Append($"Application Label: {ticket.ApplicationLabel}");
-            ticketContent.Append($"AuthCode: {ticket.AuthCode}");
-            ticketContent.Append($"Cardholder Verification Method: {ticket.CardholderVerificationMethod}");
-            ticketContent.Append($"CardScheme Name: {ticket.CardSchemeName}");
-            ticketContent.Append($"Currency:  {ticket.Currency}");
-            ticketContent.Append($"Date Of Expiry: {ticket.DateOfExpiry}");
-            ticketContent.Append($"Date Of Start: {ticket.DateOfStart}");
-            ticketContent.Append($"Payment Method: {ticket.PaymentMethod}");
-            ticketContent.Append($"Primary AccountNumber: {ticket.PrimaryAccountNumber}");
-            ticketContent.Append($"Primary AccountNumberSequence: {ticket.PrimaryAccountNumberSequence}");
-            ticketContent.Append($"Transaction Id: {ticket.TransactionId}");
-            ticketContent.Append($"Transaction Number: {ticket.TransactionNumber}");
-            ticketContent.Append($"Transaction Result: {ticket.TransactionResult}");
-            ticketContent.Append($"Transaction Time: {ticket.TransactionTime}");
-            ticketContent.Append($"Transaction Type: {ticket.TransactionType}");
-            ticketContent.Append($"UserMessage: {ticket.UserMessage}");
-            ticketContent.Append($"\t_______________________\n");
-
+            ticketContent.Append($"\n\tAmount Total: {Utils.GetCurrencySymbol(ticket.Currency)}{(ticket.AmountTotal/100.0)}\n");
+            ticketContent.Append($"\tApplication Id: {ticket.ApplicationId}\n");
+            ticketContent.Append($"\tApplication Label: {ticket.ApplicationLabel}\n");
+            ticketContent.Append($"\tAuthCode: {ticket.AuthCode}\n");
+            ticketContent.Append($"\tCard holder Verification Method: {ticket.CardholderVerificationMethod}\n");
+            ticketContent.Append($"\tCard Scheme Name: {ticket.CardSchemeName}\n");
+            ticketContent.Append($"\tCurrency:  {ticket.Currency}\n");
+            ticketContent.Append($"\tDate Of Expiry: {ticket.DateOfExpiry}\n");
+            ticketContent.Append($"\tDate Of Start: {ticket.DateOfStart}\n");
+            ticketContent.Append($"\tPayment Method: {ticket.PaymentMethod}\n");
+            ticketContent.Append($"\tPrimary Account Number: {ticket.PrimaryAccountNumber}\n");
+            ticketContent.Append($"\tPrimary Account Number Sequence: {ticket.PrimaryAccountNumberSequence}\n");
+            ticketContent.Append($"\tTransaction Id: {ticket.TransactionId}\n");
+            ticketContent.Append($"\tTransaction Number: {ticket.TransactionNumber}\n");
+            ticketContent.Append($"\tTransaction Result: {ticket.TransactionResult}\n");
+            ticketContent.Append($"\tTransaction Time: {ticket.TransactionTime}\n");
+            ticketContent.Append($"\tTransaction Type: {ticket.TransactionType}\n");
+            ticketContent.Append($"\t\n{ticket.UserMessage}\n");  
             try
                 {
                 Log.Info($"Persisting Customer ticket to {ticketPath}");
-                //Write the new ticket
+
+                //Write the new ticket to the ticket path
                 File.WriteAllText(ticketPath, ticketContent.ToString());
+
+                PersistTransaction(ticketContent.ToString());
             }
             catch (Exception ex)
             {
