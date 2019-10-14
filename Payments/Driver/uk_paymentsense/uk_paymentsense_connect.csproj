@@ -4,26 +4,27 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E574CF2C-A62A-42B0-A1E1-764CDF337956}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <ProjectGuid>{ABEA70DE-5A7A-4BB6-9C8C-FC605DA9E3EB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Acrelec.Mockingbird.Payment</RootNamespace>
-    <AssemblyName>Mockingbird.Payment_uk_payment_sense</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <AssemblyName>PAY_UK_PAYMENTSENSE_CONNECT</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <WarningLevel>3</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,38 +33,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
+    <StartupObject>Acrelec.Mockingbird.Payment.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
     <ApplicationIcon>acrelec_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Acrelec.Library.Coder">
-      <HintPath>..\..\..\Acrelec.MockingBird.Core\Acrelec.Library.Coder.dll</HintPath>
-    </Reference>
     <Reference Include="Acrelec.Library.Logger">
       <HintPath>..\..\..\Acrelec.MockingBird.Core\Acrelec.Library.Logger.dll</HintPath>
-    </Reference>
-    <Reference Include="Acrelec.Library.LogReport">
-      <HintPath>..\..\..\Acrelec.MockingBird.Core\Acrelec.Library.LogReport.dll</HintPath>
     </Reference>
     <Reference Include="Acrelec.Library.Pipes">
       <HintPath>..\..\..\Acrelec.MockingBird.Core\Acrelec.Library.Pipes.dll</HintPath>
     </Reference>
-    <Reference Include="Mockingbird.Feather.Peripherals">
-      <HintPath>..\..\..\Acrelec.MockingBird.Core\Mockingbird.Feather.Peripherals.dll</HintPath>
-    </Reference>
-    <Reference Include="Mockingbird.Interfaces.Peripherals">
-      <HintPath>..\..\..\Acrelec.MockingBird.Core\Mockingbird.Interfaces.Peripherals.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Reflection.Context" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel">
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="RestSharp, Version=106.6.10.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\RestSharp.106.6.10\lib\net452\RestSharp.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -73,7 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
+    <Compile Include="Configuration\AppConfiguration.cs" />
     <Compile Include="Contracts\IPaymentService.cs" />
     <Compile Include="Contracts\PaymentData.cs" />
     <Compile Include="Contracts\PaymentResult.cs" />
@@ -81,12 +74,20 @@
     <Compile Include="Contracts\ResultCode.cs" />
     <Compile Include="Contracts\RuntimeConfiguration.cs" />
     <Compile Include="ExtensionMethods\AssemblyExtensions.cs" />
-    <Compile Include="Loader.cs" />
+    <Compile Include="Heartbeat.cs" />
+    <Compile Include="PaymentSenseRestApi.cs" />
+    <Compile Include="PaymentService.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransactionDetails.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="PAY_UK_PAYMENTSENSE.ini" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="acrelec_icon.ico" />
   </ItemGroup>

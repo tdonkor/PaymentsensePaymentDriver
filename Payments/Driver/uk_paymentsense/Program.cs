@@ -12,7 +12,7 @@ namespace Acrelec.Mockingbird.Payment
     {
         public static ManualResetEvent ManualResetEvent = new ManualResetEvent(false);
 
-        public const string NAME = "UK_PAYMENTSENSE";
+        public const string NAME = "UK_PAYMENTSENSE_CONNECT";
 
         private static void Main(string[] args)
         {

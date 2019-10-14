@@ -20,9 +20,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driver", "Driver", "{A56BCB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Loader", "Loader", "{98026A28-B739-4575-A8F7-875E96E61C5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uk_paymentsense", "Payments\Driver\uk_paymentsense\uk_paymentsense.csproj", "{ABEA70DE-5A7A-4BB6-9C8C-FC605DA9E3EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "uk_paymentsense_connect", "Payments\Driver\uk_paymentsense\uk_paymentsense_connect.csproj", "{ABEA70DE-5A7A-4BB6-9C8C-FC605DA9E3EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "payment_sense", "Payments\Loader\payment_sense\payment_sense.csproj", "{E574CF2C-A62A-42B0-A1E1-764CDF337956}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "paymentsense_connect", "Payments\Loader\payment_sense\paymentsense_connect.csproj", "{E574CF2C-A62A-42B0-A1E1-764CDF337956}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

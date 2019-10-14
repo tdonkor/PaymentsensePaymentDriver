@@ -101,13 +101,28 @@ namespace Acrelec.Mockingbird.Payment
 
         public PeripheralStatus LastStatus { get; private set; }
 
-        public PaymentCapability Capability => new PaymentCapability()
+        //public PaymentCapability Capability => new PaymentCapability()
+        //{
+        //    AcceptsCash = false,
+        //    CanRefund = false,
+        //    PaymentApplications = null,
+        //    ReceivePayProgressCalls = false
+        //};
+
+        public PaymentCapability Capability
         {
-            AcceptsCash = false,
-            CanRefund = false,
-            PaymentApplications = null,
-            ReceivePayProgressCalls = false
-        };
+            get
+            {
+                return new PaymentCapability()
+                {
+                    AcceptsCash = false,
+                    CanRefund = false,
+                    ReceivePayProgressCalls = true,
+                    Type = Constants.PAYMENT_TYPE.ToString(),
+                    Name = Constants.PAYMENT_NAME
+                };
+            }
+        }
 
         public int MinAPILevel => 3;
 
