@@ -247,23 +247,24 @@ namespace Acrelec.Mockingbird.Payment
             //set user message
             ticket.UserMessage = "\n\tPLEASE RETAIN RECEIPT. \n\n\tTHANK YOU.";
 
-            ticketContent.Append($"\n\tAmount Total: {Utils.GetCurrencySymbol(ticket.Currency)}{(ticket.AmountTotal/100.0)}\n");
-            ticketContent.Append($"\tApplication Id: {ticket.ApplicationId}\n");
-            ticketContent.Append($"\tApplication Label: {ticket.ApplicationLabel}\n");
-            ticketContent.Append($"\tAuthCode: {ticket.AuthCode}\n");
-            ticketContent.Append($"\tCard holder Verification Method: {ticket.CardholderVerificationMethod}\n");
-            ticketContent.Append($"\tCard Scheme Name: {ticket.CardSchemeName}\n");
-            ticketContent.Append($"\tCurrency:  {ticket.Currency}\n");
-            ticketContent.Append($"\tDate Of Expiry: {ticket.DateOfExpiry}\n");
-            ticketContent.Append($"\tDate Of Start: {ticket.DateOfStart}\n");
-            ticketContent.Append($"\tPayment Method: {ticket.PaymentMethod}\n");
-            ticketContent.Append($"\tPrimary Account Number: {ticket.PrimaryAccountNumber}\n");
-            ticketContent.Append($"\tPrimary Account Number Sequence: {ticket.PrimaryAccountNumberSequence}\n");
-            ticketContent.Append($"\tTransaction Id: {ticket.TransactionId}\n");
-            ticketContent.Append($"\tTransaction Number: {ticket.TransactionNumber}\n");
-            ticketContent.Append($"\tTransaction Result: {ticket.TransactionResult}\n");
-            ticketContent.Append($"\tTransaction Time: {ticket.TransactionTime}\n");
-            ticketContent.Append($"\tTransaction Type: {ticket.TransactionType}\n");
+            ticketContent.Append("\nRECEIPT:\n\n");
+            ticketContent.Append($"App Id: {ticket.ApplicationId}\n");
+            ticketContent.Append($"App Label: {ticket.ApplicationLabel}\n");
+            ticketContent.Append($"AuthCode: {ticket.AuthCode}\n");
+            //ticketContent.Append($"Card holder Verification Method: {ticket.CardholderVerificationMethod}\n");
+            ticketContent.Append($"Card Scheme Name: {ticket.CardSchemeName}\n");
+            ticketContent.Append($"Currency: {ticket.Currency}\n");
+            ticketContent.Append($"Start Date: {ticket.DateOfStart}\n");
+            ticketContent.Append($"Expiry Date: {ticket.DateOfExpiry}\n");
+            ticketContent.Append($"Payment Method: {ticket.PaymentMethod}\n");
+            ticketContent.Append($"PAN: {ticket.PrimaryAccountNumber}\n");
+            ticketContent.Append($"PAN Num Seq: {ticket.PrimaryAccountNumberSequence}\n");
+            ticketContent.Append($"Transaction Id: {ticket.TransactionId}\n");
+            ticketContent.Append($"Transaction Num: {ticket.TransactionNumber}\n");
+            ticketContent.Append($"Transaction Result: {ticket.TransactionResult}\n");
+            ticketContent.Append($"Transaction Time: {ticket.TransactionTime}\n");
+            ticketContent.Append($"Transaction Type: {ticket.TransactionType}\n");
+            ticketContent.Append($"\nAmount Total: {Utils.GetCurrencySymbol(ticket.Currency)}{(ticket.AmountTotal / 100.0)}\n");
             ticketContent.Append($"\t\n{ticket.UserMessage}\n");  
             try
                 {
