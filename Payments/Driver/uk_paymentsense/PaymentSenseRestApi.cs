@@ -37,7 +37,7 @@ namespace Acrelec.Mockingbird.Payment
             tid = configFile.Tid;
             currency = configFile.Currency;
             installerId = configFile.InstallerId;
-            softwareHouseId = configFile.SoftwareHouseId;
+            softwareHouseId = "ST185L09"; //hardcoded value
             mediaType = configFile.MediaType;
         }
 

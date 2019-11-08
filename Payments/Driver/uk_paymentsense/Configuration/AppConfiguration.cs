@@ -128,13 +128,13 @@ namespace Acrelec.Mockingbird.Payment.Configuration
                 return _entries.FirstOrDefault(_ => _.Key == "INSTALLERID")?.Value ?? "ST185L09";
             }
         }
-        public string SoftwareHouseId
-        {
-            get
-            {
-                return _entries.FirstOrDefault(_ => _.Key == "SOFTWAREHOUSEID")?.Value ?? "ST185L09";
-            }
-        }
+        //public string SoftwareHouseId
+        //{
+        //    get
+        //    {
+        //        return _entries.FirstOrDefault(_ => _.Key == "SOFTWAREHOUSEID")?.Value ?? "ST185L09";
+        //    }
+        //}
 
 
 
