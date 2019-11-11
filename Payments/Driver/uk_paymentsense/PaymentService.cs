@@ -165,8 +165,15 @@ namespace Acrelec.Mockingbird.Payment
         private static void PrintErrorTicket(PaymentData data, string details)
         {
             //print the payment ticket for an error
-            //
-            CreateCustomerTicket("\nPayment failure with\nyour card or issuer\nNO payment has been taken.\n\nPlease try again with another card,\nor at a manned till.\n\n" +"Payment: " +  details);
+            // Check details 
+            if (details.Contains("TIMED_OUT"))
+            {
+                CreateCustomerTicket("\nPayment failure.\n\nTransaction has timed out and payment\nmay or may not have been taken.\n\nPlease speak to a member of staff for assistance.\n\n" + "Transaction: " + details);
+            }
+            else
+            {
+                CreateCustomerTicket("\nPayment failure with\nyour card or issuer.\n\nNO payment has been taken.\n\nPlease try again with another card,\nor at a manned till.\n\n" + "Transaction: " + details);
+            }
             data.HasClientReceipt = true;
         }
 
@@ -246,9 +253,7 @@ namespace Acrelec.Mockingbird.Payment
 
             //set user message
             ticket.UserMessage = "\n\tPLEASE RETAIN RECEIPT. \n\n\tTHANK YOU.";
-
-            ticketContent.Append("\nRECEIPT:\n\n");
-            ticketContent.Append($"App Id: {ticket.ApplicationId}\n");
+            ticketContent.Append($"\nApp Id: {ticket.ApplicationId}\n");
             ticketContent.Append($"App Label: {ticket.ApplicationLabel}\n");
             ticketContent.Append($"AuthCode: {ticket.AuthCode}\n");
             //ticketContent.Append($"Card holder Verification Method: {ticket.CardholderVerificationMethod}\n");
